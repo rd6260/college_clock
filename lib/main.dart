@@ -1,5 +1,5 @@
+import 'package:college_clock/screens/full_table_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:college_clock/screens/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
+      home: FullTimeTableScreen(),
     );
   }
 }

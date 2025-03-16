@@ -1,7 +1,8 @@
+import 'package:college_clock/utils/classes_data.dart';
 import 'package:flutter/material.dart';
 
-class FullTableScreen extends StatelessWidget {
-  const FullTableScreen({super.key});
+class FullTimeTableScreen extends StatelessWidget {
+  const FullTimeTableScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +13,13 @@ class FullTableScreen extends StatelessWidget {
         backgroundColor: Colors.blue,
         elevation: 0,
       ),
-      body: const FullTableView(),
+      body: const TimetableView(),
     );
   }
 }
 
-class FullTableView extends StatelessWidget {
-  const FullTableView({super.key});
+class TimetableView extends StatelessWidget {
+  const TimetableView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +38,14 @@ class FullTableView extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 80,
+                  width: 60,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
                   child: const Text(
                     'time',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -47,142 +53,80 @@ class FullTableView extends StatelessWidget {
                 ),
                 Expanded(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
-                      Text('M', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('T', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('W', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('TH', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('F', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('S', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'M',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'T',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'W',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'TH',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'F',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          
+
           // Timetable content
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Time column
-                Column(
-                  children: _buildTimeColumn(),
+                // Time column with vertical line
+                Container(
+                  width: 60,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(color: Colors.grey.shade400),
+                    ),
+                  ),
+                  child: Column(children: _buildTimeColumn()),
                 ),
-                
+
                 // Day columns
                 Expanded(
                   child: Stack(
                     children: [
                       // Grid lines
-                      Column(
-                        children: _buildGridLines(),
-                      ),
-                      
-                      // Monday classes
-                      Positioned(
-                        left: 0,
-                        width: 50,
-                        top: 40, // PHILHIS position
-                        child: _buildClassCard('PHILHIS', '3H', 'mint', 90),
-                      ),
-                      Positioned(
-                        left: 0,
-                        width: 50,
-                        top: 200, // THED02 position
-                        child: _buildClassCard('THED02', '3H', 'mint', 90),
-                      ),
-                      Positioned(
-                        left: 0,
-                        width: 50,
-                        top: 320, // LIVIT position
-                        child: _buildClassCard('LIVIT', '3H', 'mint', 60),
-                      ),
-                      Positioned(
-                        left: 0,
-                        width: 50,
-                        top: 410, // CRTBKS position
-                        child: _buildClassCard('CRTBKS', '2H', 'mint', 70),
-                      ),
-                      
-                      // Tuesday classes
-                      Positioned(
-                        left: 50,
-                        width: 50,
-                        top: 0, // INTACCT2 position
-                        child: _buildClassCard('INTACCT2', '', 'peach', 150),
-                      ),
-                      Positioned(
-                        left: 50,
-                        width: 50,
-                        top: 320, // BAPACC position
-                        child: _buildClassCard('BAPACC', '', 'peach', 150),
-                      ),
-                      Positioned(
-                        left: 50,
-                        width: 50,
-                        top: 500, // CONFBA2 position
-                        child: _buildClassCard('CONFBA2', '3H', 'peach', 100),
-                      ),
-                      
-                      // Wednesday - no classes
-                      
-                      // Thursday classes
-                      Positioned(
-                        left: 150,
-                        width: 50,
-                        top: 40, // FINMRKT position
-                        child: _buildClassCard('FINMRKT', '', 'yellow', 60),
-                      ),
-                      Positioned(
-                        left: 150,
-                        width: 50,
-                        top: 130, // PHILHIS position
-                        child: _buildClassCard('PHILHIS', '3H', 'yellow', 90),
-                      ),
-                      Positioned(
-                        left: 150,
-                        width: 50,
-                        top: 250, // THED02 position
-                        child: _buildClassCard('THED02', '3H', 'yellow', 90),
-                      ),
-                      Positioned(
-                        left: 150,
-                        width: 50,
-                        top: 370, // LIVIT position
-                        child: _buildClassCard('LIVIT', '3H', 'yellow', 60),
-                      ),
-                      Positioned(
-                        left: 150,
-                        width: 50,
-                        top: 460, // CRTBKS position
-                        child: _buildClassCard('CRTBKS', '', 'yellow', 70),
-                      ),
-                      
-                      // Friday classes
-                      Positioned(
-                        left: 200,
-                        width: 50,
-                        top: 100, // STRACOS position
-                        child: _buildClassCard('STRACOS', '', 'mint', 130),
-                      ),
-                      Positioned(
-                        left: 200,
-                        width: 50,
-                        top: 260, // PATHFIT3 position
-                        child: _buildClassCard('PATHFIT3', '4YR', 'blue', 90),
-                      ),
-                      
-                      // Saturday classes
-                      Positioned(
-                        left: 250,
-                        width: 50,
-                        top: 90, // BUSLAW1 position
-                        child: _buildClassCard('BUSLAW1', '', 'mint', 90),
-                      ),
+                      Column(children: _buildGridLines()),
+
+                      // Class cards
+                      ..._buildClassCards(context),
                     ],
                   ),
                 ),
@@ -196,95 +140,163 @@ class FullTableView extends StatelessWidget {
 
   List<Widget> _buildTimeColumn() {
     List<Widget> timeSlots = [];
-    for (int hour = 7; hour <= 20; hour++) {
-      String displayHour = hour > 12 ? '${hour - 12}' : '$hour';
-      if (hour < 10) displayHour = '0$hour';
-      
+
+    // Start from 9:00 and end at 18:30
+    for (int hour = 9; hour <= 18; hour++) {
+      String displayHour = '$hour:00';
+
       timeSlots.add(
         Container(
-          height: 50,
-          width: 50,
+          height: 60, // Height of each hour cell
           alignment: Alignment.center,
           child: Text(
             displayHour,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ),
       );
+
+      // Add half-hour mark
+      if (hour < 18) {
+        timeSlots.add(
+          Container(
+            height: 30, // Height of half-hour cell
+            alignment: Alignment.center,
+            child: Text(
+              '$hour:30',
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ),
+        );
+      }
     }
+
     return timeSlots;
   }
 
   List<Widget> _buildGridLines() {
     List<Widget> lines = [];
-    for (int i = 0; i < 14; i++) {
+
+    // Start from 9:00 and end at 18:30
+    for (int hour = 9; hour <= 18; hour++) {
+      // Full hour line
       lines.add(
         Container(
-          height: 50,
+          height: 60,
           decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(color: Colors.grey.shade300),
+            border: Border(top: BorderSide(color: Colors.grey.shade300)),
+          ),
+        ),
+      );
+
+      // Half-hour line (lighter)
+      if (hour < 18) {
+        lines.add(
+          Container(
+            height: 30,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Colors.grey.shade200, width: 0.5),
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+    return lines;
+  }
+
+  List<Widget> _buildClassCards(BuildContext context) {
+    List<Widget> cards = [];
+    final double totalWidth =
+        MediaQuery.of(context).size.width -
+        92; // Subtract time column width and margins
+    final double columnWidth = totalWidth / 5; // 5 days
+
+    for (var classInfo in classes) {
+      // Calculate position
+      final double left = (classInfo.dayOfWeek - 1) * columnWidth;
+
+      // Calculate start position (9:00 is at top, position 0)
+      final double startTime =
+          ((classInfo.startHour - 9) * 60 + classInfo.startMinute).toDouble();
+      final double endTime =
+          ((classInfo.endHour - 9) * 60 + classInfo.endMinute).toDouble();
+      final double top =
+          startTime * (90 / 60); // Convert minutes to position (90px per hour)
+      final double height =
+          (endTime - startTime) * (90 / 60); // Height based on duration
+
+      // Create card with minimum width for text
+      cards.add(
+        Positioned(
+          left: left,
+          top: top,
+          width: columnWidth - 4, // Small margin
+          height: height,
+          child: Container(
+            margin: const EdgeInsets.all(2),
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: classInfo.color,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Stack(
+              children: [
+                // Start time (top right)
+                Positioned(
+                  top: 2,
+                  right: 2,
+                  child: Text(
+                    '${classInfo.startHour.toString().padLeft(2, '0')}:${classInfo.startMinute.toString().padLeft(2, '0')}',
+                    style: const TextStyle(fontSize: 8, color: Colors.black54),
+                  ),
+                ),
+
+                // End time (bottom right)
+                Positioned(
+                  bottom: 2,
+                  right: 2,
+                  child: Text(
+                    '${classInfo.endHour.toString().padLeft(2, '0')}:${classInfo.endMinute.toString().padLeft(2, '0')}',
+                    style: const TextStyle(fontSize: 8, color: Colors.black54),
+                  ),
+                ),
+
+                // Course info (centered)
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        classInfo.courseCode,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        classInfo.courseName,
+                        style: const TextStyle(fontSize: 10),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       );
     }
-    return lines;
-  }
 
-  Widget _buildClassCard(String title, String subtitle, String color, double height) {
-    Color backgroundColor;
-    switch (color) {
-      case 'mint':
-        backgroundColor = const Color(0xFFDCF8E6);
-        break;
-      case 'peach':
-        backgroundColor = const Color(0xFFFEE6D9);
-        break;
-      case 'yellow':
-        backgroundColor = const Color(0xFFFFF6D9);
-        break;
-      case 'blue':
-        backgroundColor = const Color(0xFFD9E8FF);
-        break;
-      default:
-        backgroundColor = Colors.white;
-    }
-
-    return Container(
-      height: height,
-      margin: const EdgeInsets.all(2),
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          if (subtitle.isNotEmpty)
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 8,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          const SizedBox(height: 2),
-        ],
-      ),
-    );
+    return cards;
   }
 }
+
