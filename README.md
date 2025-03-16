@@ -6,8 +6,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-In%20Development-yellow" alt="Status">
-  <img src="https://img.shields.io/badge/Platform-Android-blue" alt="Platform">
-  <img src="https://img.shields.io/badge/Made%20for-XYZ%20College-purple" alt="College">
+  <img src="https://img.shields.io/badge/Platform-Mobile-blue" alt="Platform">
+  <img src="https://img.shields.io/badge/Made%20for-IIIT-Dharwad%20College-purple" alt="College">
 </p>
 
 ---
