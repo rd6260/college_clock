@@ -9,8 +9,8 @@ class FullTimeTableScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFE6F2F5),
       appBar: AppBar(
-        title: const Text('My Timetable'),
-        backgroundColor: Colors.blue,
+        title: const Text('Weekly Timetable'),
+        backgroundColor: Colors.white10,
         elevation: 0,
       ),
       body: const TimetableView(),
@@ -299,4 +299,3 @@ class TimetableView extends StatelessWidget {
     return cards;
   }
 }
-
