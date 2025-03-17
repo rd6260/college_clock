@@ -37,7 +37,7 @@ class Course {
     this.tutorialColor,
   });
 
-  Map<String, dynamic> jasonify() {
+  Map<String, dynamic> jsonify() {
     List<Map> lectureData = [];
     List<Map>? labData;
     List<Map>? tutorialData;
@@ -87,6 +87,22 @@ class CourseSession {
     required this.endTime,
     this.classroom,
   });
+
+  // constructor to load from JSON
+  factory CourseSession.fromJson(Map<String, dynamic> json) {
+    return CourseSession(
+      day: json['day'],
+      startTime: TimeOfDay(
+        hour: json['start hour'],
+        minute: json['start minute'],
+      ),
+      endTime: TimeOfDay(
+        hour: json['end hour'],
+        minute: json['end minute'],
+      ),
+      classroom: json['classroom'],
+    );
+  }
 
   Map<String, dynamic> jsonify() {
     return {
