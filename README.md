@@ -12,7 +12,7 @@
 
 ---
 
-Welcome to **College Clock** — the easiest way to stay updated with your class schedule at **XYZ College**! 🎓✨  
+Welcome to **College Clock** — the easiest way to stay updated with your class schedule at **IIIT Dharwad**! 🎓✨  
 No more scrolling through group chats or asking classmates. Everything you need is just a tap away!
 
 ---
@@ -48,7 +48,7 @@ We’re excited to announce that **College Clock** will soon be available on the
 
 ## 📌 Note:
 
-⚠️ Currently, **College Clock** is tailored specifically for **XYZ College** students.  
+⚠️ Currently, **College Clock** is tailored specifically for **IIIT Dharwad** students.  
 📱 iOS version is under active development — stay tuned!
 
 ---
