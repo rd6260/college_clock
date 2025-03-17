@@ -159,7 +159,7 @@ final List<Course> courses = [
   ),
   // Open Electives
   Course(
-    courseName: "New Data Science with Python",
+    courseName: "Data Science with Python",
     aliasName: "DSWP",
     professor: "Dr. Abdul Wahid",
     credits: "2-0-0-0-2",
@@ -182,7 +182,7 @@ final List<Course> courses = [
     ],
   ),
   Course(
-    courseName: "New Introduction to Digital VLSI Design",
+    courseName: "Introduction to Digital VLSI Design",
     aliasName: "VLSI",
     professor: "Dr. Prakash Pawar",
     credits: "2-0-0-0-2",
@@ -205,7 +205,7 @@ final List<Course> courses = [
     lectureSessions: [], // No specific timing mentioned
   ),
   Course(
-    courseName: "New Principles of Quantum Physics",
+    courseName: "Principles of Quantum Physics",
     aliasName: "Quantum",
     professor: "Dr. Ashwath Babu & Prof. Ravi Shankar",
     credits: "2-0-0-0-2",
@@ -220,7 +220,7 @@ final List<Course> courses = [
     ],
   ),
   Course(
-    courseName: "New Linux for Engineers",
+    courseName: "Linux for Engineers",
     aliasName: "Linux",
     professor: "Dr. Shirshendu Layek",
     credits: "2-0-0-0-2",
@@ -249,7 +249,7 @@ final List<Course> courses = [
     ],
   ),
   Course(
-    courseName: "New Photography101",
+    courseName: "Photography101",
     aliasName: "Photography",
     professor: "Dr. Prabhu Prasad BM",
     credits: "1-0-0-0-1",
@@ -278,7 +278,7 @@ final List<Course> courses = [
     ],
   ),
   Course(
-    courseName: "New Introduction to Holistic Personality Development",
+    courseName: "Introduction to Holistic Personality Development",
     aliasName: "Holistic",
     professor: "Prof. Chachadi & Dr. Chandrika K",
     credits: "1-0-0-0-1",
@@ -287,7 +287,7 @@ final List<Course> courses = [
   ),
   Course(
     courseName:
-        "New Visual Design – Principles and Application in Product Communication",
+        "Visual Design - Principles and Application in Product Communication",
     aliasName: "Visual Design",
     professor: "Dr. Sandesh P",
     credits: "2-0-0-0-2",
@@ -308,7 +308,7 @@ final List<Course> courses = [
     ],
   ),
   Course(
-    courseName: "New Introduction to Internet of Things",
+    courseName: "Introduction to Internet of Things",
     aliasName: "IoT",
     professor: "Dr. Jagadeesha Bhat",
     credits: "2-0-0-0-2",
@@ -316,7 +316,7 @@ final List<Course> courses = [
     lectureSessions: [], // Timing not specified
   ),
   Course(
-    courseName: "New Computer Intensive Statistical Methods",
+    courseName: "Computer Intensive Statistical Methods",
     aliasName: "CISM",
     professor: "Dr. Ramesh Athe",
     credits: "2-0-0-0-2",
@@ -324,7 +324,7 @@ final List<Course> courses = [
     lectureSessions: [], // Timing not specified
   ),
   Course(
-    courseName: "New Concurrency and Computation",
+    courseName: "Concurrency and Computation",
     aliasName: "Concurrency",
     professor: "Dr. Pramod Y",
     credits: "2-0-0-0-2",
