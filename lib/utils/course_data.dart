@@ -8,7 +8,7 @@ final List<Course> courses = [
     courseCode: "MA163",
     professor: "Dr. Sibasankar Padhy",
     credits: "3-1-0-0-2",
-    segment: "Full Semester",
+    segment: "Half Semester",
     lectureSessions: [],
   ),
   Course(
@@ -17,7 +17,7 @@ final List<Course> courses = [
     professor: "Dr. Dibyajyoti Guha",
     credits: "3-1-0-0-2",
     labAssistants: ["Shri Ranga Pujari", "Ashwini Chikkenakoppa"],
-    segment: "Full Semester",
+    segment: "Half Semester",
     lectureSessions: [
       CourseSession(
         day: 3, // Wednesday
@@ -41,7 +41,7 @@ final List<Course> courses = [
     professor: "Dr. Manjunath",
     credits: "3-0-2-0-2",
     labAssistants: ["Vinod", "Basavaraj Choukimath"],
-    segment: "Full Semester",
+    segment: "Half Semester",
     lectureSessions: [
       CourseSession(
         day: 2, // Tuesday
@@ -157,8 +157,7 @@ final List<Course> courses = [
       ),
     ],
   ),
-  // ];
-  // final List<Course> openElectives = [
+  // Open Electives
   Course(
     courseName: "New Data Science with Python",
     aliasName: "DSWP",
@@ -167,10 +166,18 @@ final List<Course> courses = [
     segment: "Half Semester",
     lectureSessions: [
       CourseSession(
-        day: 1, // Monday
-        startTime: TimeOfDay(hour: 14, minute: 30),
-        endTime: TimeOfDay(hour: 15, minute: 30),
-        classroom: "B4",
+        day: 4,
+        startTime: TimeOfDay(hour: 11, minute: 45),
+        endTime: TimeOfDay(hour: 13, minute: 15),
+        classroom: "C002",
+      ),
+    ],
+    tutorialSessions: [
+      CourseSession(
+        day: 1,
+        startTime: TimeOfDay(hour: 17, minute: 30),
+        endTime: TimeOfDay(hour: 18, minute: 30),
+        classroom: "C002",
       ),
     ],
   ),
@@ -190,7 +197,7 @@ final List<Course> courses = [
     ],
   ),
   Course(
-    courseName: "New Industry Insights Program Part 1",
+    courseName: "Industry Insights Program Part 1",
     aliasName: "IIP",
     professor: "Mr. Ram Subramanian & Mr. Sasi Kumar Sundara Rajan",
     credits: "1-0-0-0-1",
@@ -220,9 +227,23 @@ final List<Course> courses = [
     segment: "Half Semester",
     lectureSessions: [
       CourseSession(
-        day: 4, // Thursday
+        day: 1,
         startTime: TimeOfDay(hour: 14, minute: 30),
         endTime: TimeOfDay(hour: 15, minute: 30),
+        classroom: "C203",
+      ),
+      CourseSession(
+        day: 3,
+        startTime: TimeOfDay(hour: 11, minute: 45),
+        endTime: TimeOfDay(hour: 13, minute: 15),
+        classroom: "C203",
+      ),
+    ],
+    tutorialSessions: [
+      CourseSession(
+        day: 5,
+        startTime: TimeOfDay(hour: 12, minute: 15),
+        endTime: TimeOfDay(hour: 13, minute: 15),
         classroom: "C203",
       ),
     ],
@@ -235,9 +256,23 @@ final List<Course> courses = [
     segment: "Half Semester",
     lectureSessions: [
       CourseSession(
-        day: 4, // Thursday
+        day: 1,
         startTime: TimeOfDay(hour: 14, minute: 30),
         endTime: TimeOfDay(hour: 15, minute: 30),
+        classroom: "C204",
+      ),
+      CourseSession(
+        day: 3,
+        startTime: TimeOfDay(hour: 11, minute: 45),
+        endTime: TimeOfDay(hour: 13, minute: 15),
+        classroom: "C204",
+      ),
+    ],
+    tutorialSessions: [
+      CourseSession(
+        day: 5,
+        startTime: TimeOfDay(hour: 12, minute: 15),
+        endTime: TimeOfDay(hour: 13, minute: 15),
         classroom: "C204",
       ),
     ],
