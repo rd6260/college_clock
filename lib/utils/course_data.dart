@@ -7,7 +7,7 @@ final List<Course> courses = [
     courseCode: "MA163",
     professor: "Dr. Sibasankar Padhy",
     credits: "3-1-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [],
   ),
   Course(
@@ -16,7 +16,7 @@ final List<Course> courses = [
     professor: "Dr. Dibyajyoti Guha",
     credits: "3-1-0-0-2",
     labAssistants: ["Shri Ranga Pujari", "Ashwini Chikkenakoppa"],
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 3, // Wednesday
@@ -40,7 +40,7 @@ final List<Course> courses = [
     professor: "Dr. Manjunath",
     credits: "3-0-2-0-2",
     labAssistants: ["Vinod", "Basavaraj Choukimath"],
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 2, // Tuesday
@@ -69,7 +69,7 @@ final List<Course> courses = [
     courseCode: "HS161",
     professor: "Dr. Rajesh N S",
     credits: "3-0-0-0-3",
-    segment: "Full Semester",
+    segment: true,
     lectureSessions: [
       CourseSession(
         day: 3, // Wednesday
@@ -102,7 +102,7 @@ final List<Course> courses = [
       "Ms. Shraddha",
       "Basavaraj Choukimath",
     ],
-    segment: "Full Semester",
+    segment: true,
     lectureSessions: [
       CourseSession(
         day: 1, // Monday
@@ -132,7 +132,7 @@ final List<Course> courses = [
     professor: "Dr. Siddharth R.",
     credits: "2-0-2-0-3",
     labAssistants: ["Ms. Vani", "Ms. Meghana"],
-    segment: "Full Semester",
+    segment: true,
     lectureSessions: [
       CourseSession(
         day: 3, // Wednesday
@@ -162,7 +162,7 @@ final List<Course> courses = [
     aliasName: "DSWP",
     professor: "Dr. Abdul Wahid",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 4,
@@ -185,7 +185,7 @@ final List<Course> courses = [
     aliasName: "VLSI",
     professor: "Dr. Prakash Pawar",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 4, // Thursday
@@ -200,7 +200,7 @@ final List<Course> courses = [
     aliasName: "IIP",
     professor: "Mr. Ram Subramanian & Mr. Sasi Kumar Sundara Rajan",
     credits: "1-0-0-0-1",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [], // No specific timing mentioned
   ),
   Course(
@@ -208,7 +208,7 @@ final List<Course> courses = [
     aliasName: "Quantum",
     professor: "Dr. Ashwath Babu & Prof. Ravi Shankar",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 1, // Monday
@@ -222,7 +222,7 @@ final List<Course> courses = [
     aliasName: "Linux",
     professor: "Dr. Shirshendu Layek",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 1,
@@ -251,7 +251,7 @@ final List<Course> courses = [
     aliasName: "Photography",
     professor: "Dr. Prabhu Prasad BM",
     credits: "1-0-0-0-1",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 1,
@@ -280,7 +280,7 @@ final List<Course> courses = [
     aliasName: "Holistic",
     professor: "Prof. Chachadi & Dr. Chandrika K",
     credits: "1-0-0-0-1",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [], // Timing not specified
   ),
   Course(
@@ -289,7 +289,7 @@ final List<Course> courses = [
     aliasName: "Visual Design",
     professor: "Dr. Sandesh P",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [
       CourseSession(
         day: 2, // Tuesday
@@ -310,7 +310,7 @@ final List<Course> courses = [
     aliasName: "IoT",
     professor: "Dr. Jagadeesha Bhat",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [], // Timing not specified
   ),
   Course(
@@ -318,7 +318,7 @@ final List<Course> courses = [
     aliasName: "CISM",
     professor: "Dr. Ramesh Athe",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [], // Timing not specified
   ),
   Course(
@@ -326,7 +326,7 @@ final List<Course> courses = [
     aliasName: "Concurrency",
     professor: "Dr. Pramod Y",
     credits: "2-0-0-0-2",
-    segment: "Half Semester",
+    segment: false,
     lectureSessions: [], // Timing not specified
   ),
 ];

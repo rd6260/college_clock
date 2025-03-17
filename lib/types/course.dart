@@ -10,8 +10,8 @@ class Course {
   final String professor;
   final String credits; // Format: L-T-P-S-C
   final List<String>? labAssistants;
-  final String? teachingAssistant;
-  final String segment; // "Full Semester" or "Half Semester"
+  final String? teachingAssistants;
+  final bool segment; // true: "Full Semester"  false: "Half Semester"
   final List<CourseSession> lectureSessions;
   final List<CourseSession>? labSessions;
   final List<CourseSession>? tutorialSessions;
@@ -27,7 +27,7 @@ class Course {
     required this.professor,
     required this.credits,
     this.labAssistants,
-    this.teachingAssistant,
+    this.teachingAssistants,
     required this.segment,
     required this.lectureSessions,
     this.labSessions,
@@ -36,9 +36,43 @@ class Course {
     this.labColor,
     this.tutorialColor,
   });
+
+  Map<String, dynamic> jasonify() {
+    List<Map> lectureData = [];
+    List<Map>? labData;
+    List<Map>? tutorialData;
+
+    for (CourseSession lecture in lectureSessions) {
+      lectureData.add(lecture.jsonify());
+    }
+
+    for (CourseSession lab in labSessions!) {
+      lectureData.add(lab.jsonify());
+    }
+
+    for (CourseSession tutorial in tutorialSessions!) {
+      lectureData.add(tutorial.jsonify());
+    }
+
+    return {
+      // "id": this.courseID,
+      "course name": courseName,
+      "alias name": aliasName,
+      "course code": courseCode,
+      "professor": professor,
+      "credits": credits,
+      "lab assistants": labAssistants,
+      "teaching assistants": teachingAssistants,
+      "segment": segment,
+      "lecture sessions": lectureData,
+      "lab sessions": labData,
+      "tutorial sessions": tutorialData,
+      "lectureColor": lectureColor,
+      "labColor": labColor,
+      "tutorialColor": tutorialColor,
+    };
+  }
 }
-
-
 
 // Class for storing time slots of different sessions
 class CourseSession {
@@ -53,4 +87,15 @@ class CourseSession {
     required this.endTime,
     this.classroom,
   });
+
+  Map<String, dynamic> jsonify() {
+    return {
+      "day": day,
+      "start hour": startTime.hour,
+      "start minute": startTime.minute,
+      "end hour": endTime.hour,
+      "end minute": endTime.minute,
+      "classroom": classroom,
+    };
+  }
 }
