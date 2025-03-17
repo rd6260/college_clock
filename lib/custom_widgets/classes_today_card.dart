@@ -5,23 +5,18 @@ import 'package:flutter/material.dart';
 
 class ClassesTodayCard extends StatelessWidget {
   final List<Course> courses;
+  final int weekDayNumber;
 
-  const ClassesTodayCard({super.key, required this.courses});
+  const ClassesTodayCard({
+    super.key,
+    required this.courses,
+    required this.weekDayNumber,
+  });
 
   String _formatTimeOfDay(TimeOfDay time) {
     final hour = time.hour.toString().padLeft(2, '0');
     final minute = time.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
-  }
-
-  // Get today's day number (1-5 for Monday-Friday)
-  int _getTodayDayNumber() {
-    final now = DateTime.now();
-    // DateTime weekday: 1 is Monday, 7 is Sunday
-    int day = now.weekday;
-
-    // Only return 1-5 (Monday-Friday)
-    return day <= 5 ? day : 0;
   }
 
   // Get color based on session type
@@ -41,19 +36,17 @@ class ClassesTodayCard extends StatelessWidget {
   }
 
   List<Map<String, dynamic>> _getTodaysSessions() {
-    final todayDayNumber = _getTodayDayNumber();
-
     List<Map<String, dynamic>> todaysSessions = [];
 
     // If it's weekend, return empty list
-    if (todayDayNumber == 0) {
+    if (weekDayNumber == 0) {
       return todaysSessions;
     }
 
     for (final course in courses) {
       // Check lecture sessions
       for (final session in course.lectureSessions) {
-        if (session.day == todayDayNumber) {
+        if (session.day == weekDayNumber) {
           todaysSessions.add({
             'course': course,
             'session': session,
@@ -67,7 +60,7 @@ class ClassesTodayCard extends StatelessWidget {
       // Check lab sessions
       if (course.labSessions != null) {
         for (final session in course.labSessions!) {
-          if (session.day == todayDayNumber) {
+          if (session.day == weekDayNumber) {
             todaysSessions.add({
               'course': course,
               'session': session,
@@ -82,7 +75,7 @@ class ClassesTodayCard extends StatelessWidget {
       // Check tutorial sessions
       if (course.tutorialSessions != null) {
         for (final session in course.tutorialSessions!) {
-          if (session.day == todayDayNumber) {
+          if (session.day == weekDayNumber) {
             todaysSessions.add({
               'course': course,
               'session': session,
@@ -166,6 +159,7 @@ class ClassesTodayCard extends StatelessWidget {
                       'Weekly View',
                       style: TextStyle(
                         color: Colors.grey[700],
+                        // backgroundColor: Colors.grey[400],
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),

@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print(_selectedDay);
     final now = DateTime.now();
     final dateFormat = DateFormat('EEEE, MMM d');
 
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'My Schedule',
+                        'Class Schedule',
                         style: TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.bold,
@@ -136,7 +137,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SliverToBoxAdapter(child: SizedBox(height: 30)),
-            SliverToBoxAdapter(child: ClassesTodayCard(courses: courses)),
+            SliverToBoxAdapter(
+              child: ClassesTodayCard(
+                courses: courses,
+                weekDayNumber: _selectedDay + 1,
+              ),
+            ),
           ],
         ),
       ),
