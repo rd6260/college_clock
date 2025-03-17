@@ -1,8 +1,8 @@
 import 'package:college_clock/utils/classes_data.dart';
 import 'package:flutter/material.dart';
 
-class FullTimeTableScreen extends StatelessWidget {
-  const FullTimeTableScreen({super.key});
+class WeeklyTimetableScreen extends StatelessWidget {
+  const WeeklyTimetableScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

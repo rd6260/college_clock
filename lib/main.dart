@@ -1,4 +1,4 @@
-import 'package:college_clock/screens/full_table_screen.dart';
+import 'package:college_clock/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: FullTimeTableScreen(),
+      home: HomeScreen(),
     );
   }
 }

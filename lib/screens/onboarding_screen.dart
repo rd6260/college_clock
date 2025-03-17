@@ -3,6 +3,7 @@ import 'package:college_clock/screens/home_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ImagesPath {
   static String kOnboarding1 = 'assets/onboarding/onboarding1.png';
@@ -26,6 +27,7 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
   final PageController _pageController = PageController(initialPage: 0);
   int _currentIndex = 0;
 
