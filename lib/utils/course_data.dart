@@ -9,14 +9,18 @@ final List<Course> courses = [
     credits: "3-1-0-0-2",
     segment: false,
     lectureSessions: [],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Optimization",
     courseCode: "CS162",
     professor: "Dr. Dibyajyoti Guha",
     credits: "3-1-0-0-2",
-    labAssistants: ["Shri Ranga Pujari", "Ashwini Chikkenakoppa"],
+    assistantTeachers: ["Shri Ranga Pujari", "Ashwini Chikkenakoppa"],
     segment: false,
+
     lectureSessions: [
       CourseSession(
         day: 3, // Wednesday
@@ -33,13 +37,16 @@ final List<Course> courses = [
         classroom: "C004",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Computer Architecture",
     courseCode: "CS164",
     professor: "Dr. Manjunath",
     credits: "3-0-2-0-2",
-    labAssistants: ["Vinod", "Basavaraj Choukimath"],
+    assistantTeachers: ["Vinod", "Basavaraj Choukimath"],
     segment: false,
     lectureSessions: [
       CourseSession(
@@ -63,6 +70,9 @@ final List<Course> courses = [
         classroom: "L207/L208",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "English Language and Communication",
@@ -90,13 +100,16 @@ final List<Course> courses = [
         classroom: "C004",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Data Structures and Algorithms",
     courseCode: "CS163",
     professor: "Dr. Sunil Saumya",
     credits: "3-0-2-0-4",
-    labAssistants: [
+    assistantTeachers: [
       "Mr. Vinod Konnur",
       "Anil M Kabbur",
       "Ms. Shraddha",
@@ -125,13 +138,16 @@ final List<Course> courses = [
         classroom: "L207/L208",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Data Curation Techniques",
     courseCode: "DS164",
     professor: "Dr. Siddharth R.",
     credits: "2-0-2-0-3",
-    labAssistants: ["Ms. Vani", "Ms. Meghana"],
+    assistantTeachers: ["Ms. Vani", "Ms. Meghana"],
     segment: true,
     lectureSessions: [
       CourseSession(
@@ -155,6 +171,9 @@ final List<Course> courses = [
         classroom: "L207/L208",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   // Open Electives
   Course(
@@ -179,6 +198,9 @@ final List<Course> courses = [
         classroom: "C002",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Introduction to Digital VLSI Design",
@@ -194,6 +216,9 @@ final List<Course> courses = [
         classroom: "C203",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Industry Insights Program Part 1",
@@ -202,6 +227,9 @@ final List<Course> courses = [
     credits: "1-0-0-0-1",
     segment: false,
     lectureSessions: [], // No specific timing mentioned
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Principles of Quantum Physics",
@@ -216,6 +244,9 @@ final List<Course> courses = [
         endTime: TimeOfDay(hour: 15, minute: 30),
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Linux for Engineers",
@@ -245,6 +276,9 @@ final List<Course> courses = [
         classroom: "C203",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Photography101",
@@ -274,6 +308,9 @@ final List<Course> courses = [
         classroom: "C204",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Introduction to Holistic Personality Development",
@@ -282,6 +319,9 @@ final List<Course> courses = [
     credits: "1-0-0-0-1",
     segment: false,
     lectureSessions: [], // Timing not specified
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName:
@@ -304,6 +344,9 @@ final List<Course> courses = [
         classroom: "C304",
       ),
     ],
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Introduction to Internet of Things",
@@ -312,6 +355,9 @@ final List<Course> courses = [
     credits: "2-0-0-0-2",
     segment: false,
     lectureSessions: [], // Timing not specified
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Computer Intensive Statistical Methods",
@@ -320,6 +366,9 @@ final List<Course> courses = [
     credits: "2-0-0-0-2",
     segment: false,
     lectureSessions: [], // Timing not specified
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
   Course(
     courseName: "Concurrency and Computation",
@@ -328,5 +377,8 @@ final List<Course> courses = [
     credits: "2-0-0-0-2",
     segment: false,
     lectureSessions: [], // Timing not specified
+    relevant: true,
+    semester: 2,
+    department: "DSAI",
   ),
 ];

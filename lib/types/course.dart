@@ -7,10 +7,9 @@ class Course {
   final String?
   aliasName; // nickname sort of, cause real name is very long sometimes
   final String? courseCode;
-  final String professor;
   final String credits; // Format: L-T-P-S-C
-  final List<String>? labAssistants;
-  final String? teachingAssistants;
+  final String professor;
+  final List<String>? assistantTeachers;
   final bool segment; // true: "Full Semester"  false: "Half Semester"
   final List<CourseSession> lectureSessions;
   final List<CourseSession>? labSessions;
@@ -18,16 +17,18 @@ class Course {
   final Color? lectureColor;
   final Color? labColor;
   final Color? tutorialColor;
+  final bool relevant;
+  final int semester;
+  final String department;
 
   Course({
     // required this.courseID,
     required this.courseName,
     this.aliasName,
     this.courseCode,
-    required this.professor,
     required this.credits,
-    this.labAssistants,
-    this.teachingAssistants,
+    required this.professor,
+    this.assistantTeachers,
     required this.segment,
     required this.lectureSessions,
     this.labSessions,
@@ -35,6 +36,9 @@ class Course {
     this.lectureColor,
     this.labColor,
     this.tutorialColor,
+    required this.relevant,
+    required this.semester,
+    required this.department,
   });
 
   Map<String, dynamic> jsonify() {
@@ -46,30 +50,32 @@ class Course {
       lectureData.add(lecture.jsonify());
     }
 
-    for (CourseSession lab in labSessions!) {
+    for (CourseSession lab in labSessions ?? []) {
       lectureData.add(lab.jsonify());
     }
 
-    for (CourseSession tutorial in tutorialSessions!) {
+    for (CourseSession tutorial in tutorialSessions ?? []) {
       lectureData.add(tutorial.jsonify());
     }
 
     return {
       // "id": this.courseID,
-      "course name": courseName,
-      "alias name": aliasName,
-      "course code": courseCode,
+      "course_name": courseName,
+      "alias_name": aliasName,
+      "course_code": courseCode,
       "professor": professor,
       "credits": credits,
-      "lab assistants": labAssistants,
-      "teaching assistants": teachingAssistants,
+      "assistant_teachers": assistantTeachers,
       "segment": segment,
-      "lecture sessions": lectureData,
-      "lab sessions": labData,
-      "tutorial sessions": tutorialData,
-      "lectureColor": lectureColor,
-      "labColor": labColor,
-      "tutorialColor": tutorialColor,
+      "lecture_sessions": lectureData,
+      "lab_sessions": labData,
+      "tutorial_sessions": tutorialData,
+      "lecture_color": lectureColor,
+      "lab_color": labColor,
+      "tutorial_color": tutorialColor,
+      "relevant": relevant,
+      "semester": semester,
+      "department": department,
     };
   }
 }
@@ -93,13 +99,10 @@ class CourseSession {
     return CourseSession(
       day: json['day'],
       startTime: TimeOfDay(
-        hour: json['start hour'],
-        minute: json['start minute'],
+        hour: json['start_hour'],
+        minute: json['start_minute'],
       ),
-      endTime: TimeOfDay(
-        hour: json['end hour'],
-        minute: json['end minute'],
-      ),
+      endTime: TimeOfDay(hour: json['end_hour'], minute: json['end_minute']),
       classroom: json['classroom'],
     );
   }
@@ -107,10 +110,10 @@ class CourseSession {
   Map<String, dynamic> jsonify() {
     return {
       "day": day,
-      "start hour": startTime.hour,
-      "start minute": startTime.minute,
-      "end hour": endTime.hour,
-      "end minute": endTime.minute,
+      "start_hour": startTime.hour,
+      "start_minute": startTime.minute,
+      "end_hour": endTime.hour,
+      "end_minute": endTime.minute,
       "classroom": classroom,
     };
   }

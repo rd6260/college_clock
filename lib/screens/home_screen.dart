@@ -2,6 +2,7 @@ import 'package:college_clock/custom_widgets/classes_today_card.dart';
 import 'package:college_clock/utils/course_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -139,6 +140,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ClassesTodayCard(
                 courses: courses,
                 weekDayNumber: _selectedDay + 1,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: ElevatedButton(
+                onPressed: () async {
+                  for (var course in courses) {
+                    await Supabase.instance.client.from("courses").insert(course.jsonify());
+                  }
+                },
+                child: Text("submit data"),
               ),
             ),
           ],
