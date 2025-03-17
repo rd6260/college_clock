@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      // drawer: Drawer(),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -49,10 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   IconButton(
-                    icon: Icon(
-                      Icons.notifications_outlined,
-                      color: Colors.grey[700],
-                    ),
+                    icon: Icon(Icons.more_vert, color: Colors.grey[700]),
                     onPressed: () {},
                   ),
                 ],

@@ -1,5 +1,4 @@
 import 'package:college_clock/types/course.dart';
-import 'package:college_clock/types/course_session.dart';
 import 'package:flutter/material.dart';
 
 final List<Course> courses = [
@@ -215,7 +214,6 @@ final List<Course> courses = [
         day: 1, // Monday
         startTime: TimeOfDay(hour: 14, minute: 30),
         endTime: TimeOfDay(hour: 15, minute: 30),
-        classroom: "B4",
       ),
     ],
   ),

@@ -1,6 +1,5 @@
 import 'package:college_clock/screens/weekly_time_table_screen.dart';
 import 'package:college_clock/types/course.dart';
-import 'package:college_clock/types/course_session.dart';
 import 'package:flutter/material.dart';
 
 class ClassesTodayCard extends StatelessWidget {
@@ -289,7 +288,7 @@ class ClassesTodayCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      session.classroom,
+                      session.classroom ?? "N/A",
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.8,

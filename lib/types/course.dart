@@ -1,7 +1,8 @@
-import 'package:college_clock/types/course_session.dart';
+import 'package:flutter/material.dart';
 
 class Course {
   // Course Class to store all course-related information
+  // final String courseID; // Unique identifier of a course
   final String courseName;
   final String?
   aliasName; // nickname sort of, cause real name is very long sometimes
@@ -14,8 +15,12 @@ class Course {
   final List<CourseSession> lectureSessions;
   final List<CourseSession>? labSessions;
   final List<CourseSession>? tutorialSessions;
+  final Color? lectureColor;
+  final Color? labColor;
+  final Color? tutorialColor;
 
   Course({
+    // required this.courseID,
     required this.courseName,
     this.aliasName,
     this.courseCode,
@@ -27,5 +32,25 @@ class Course {
     required this.lectureSessions,
     this.labSessions,
     this.tutorialSessions,
+    this.lectureColor,
+    this.labColor,
+    this.tutorialColor,
+  });
+}
+
+
+
+// Class for storing time slots of different sessions
+class CourseSession {
+  final int day; // monday = 1 to friday = 5
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
+  final String? classroom;
+
+  CourseSession({
+    required this.day,
+    required this.startTime,
+    required this.endTime,
+    this.classroom,
   });
 }

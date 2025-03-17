@@ -1,0 +1,3 @@
+const String supabaseURL = "https://qsnvdestnalhilnnfvpn.supabase.co";
+const String supabaseAnonKey =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzbnZkZXN0bmFsaGlsbm5mdnBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyMzMzNDAsImV4cCI6MjA1NzgwOTM0MH0._hDjd3rqJLcQheeauih5-kc3X_MUMesFqvRQBtJlGR4";
