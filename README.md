@@ -68,6 +68,6 @@ Check out the source code, fork the repo, and help us make College Clock even be
 ---
 
 <p align="center">
-  Made with ❤️ for XYZ College students.
+  Made with ❤️ for IIIT Dharwad students.
 </p>
 
