@@ -14,12 +14,13 @@ class Course {
   final List<CourseSession> lectureSessions;
   final List<CourseSession>? labSessions;
   final List<CourseSession>? tutorialSessions;
-  final Color? lectureColor;
-  final Color? labColor;
-  final Color? tutorialColor;
+  final String? lectureColor;
+  final String? labColor;
+  final String? tutorialColor;
   final bool relevant;
   final int semester;
-  /// CSE, DSAI, ECE. If null it means it can be for any or all. 
+
+  /// CSE, DSAI, ECE. If null it means it can be for any or all.
   final List<String>? departments;
 
   Course({
@@ -49,19 +50,6 @@ class Course {
       return data.map((e) => CourseSession.fromJson(e)).toList();
     }
 
-    Color? parseColor(String? colorString) {
-      if (colorString == null) return null;
-      // Assuming the color is stored as a hex string like "#FFAABBCC"
-      colorString = colorString.replaceFirst('#', '');
-      int value = int.parse(colorString, radix: 16);
-      return Color.fromARGB(
-        (value >> 24) & 0xFF,
-        (value >> 16) & 0xFF,
-        (value >> 8) & 0xFF,
-        value & 0xFF,
-      );
-    }
-
     return Course(
       courseID: json['id'],
       courseName: json['course_name'],
@@ -77,9 +65,9 @@ class Course {
       lectureSessions: parseSessions(json['lecture_sessions']),
       labSessions: parseSessions(json['lab_sessions']),
       tutorialSessions: parseSessions(json['tutorial_sessions']),
-      lectureColor: parseColor(json['lecture_color']),
-      labColor: parseColor(json['lab_color']),
-      tutorialColor: parseColor(json['tutorial_color']),
+      lectureColor: json['lecture_color'],
+      labColor: json['lab_color'],
+      tutorialColor: json['tutorial_color'],
       relevant: json['relevant'],
       semester: json['semester'],
       departments: json['departments'],
@@ -115,11 +103,9 @@ class Course {
       "lecture_sessions": lectureData,
       "lab_sessions": labData,
       "tutorial_sessions": tutorialData,
-      // "lecture_color": lectureColor == null ? null : colorToHex(lectureColor!),
-      "lecture_color": lectureColor?.toString(),
-      "lab_color": labColor == null ? null : colorToHex(labColor!),
-      "tutorial_color":
-          tutorialColor == null ? null : colorToHex(tutorialColor!),
+      "lecture_color": lectureColor,
+      "lab_color": labColor,
+      "tutorial_color": tutorialColor,
       "relevant": relevant,
       "semester": semester,
       "departments": departments,
