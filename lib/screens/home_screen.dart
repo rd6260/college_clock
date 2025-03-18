@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _isLoading = false;
         });
       }
-      debugPrint("DEV: Local storage successful");
+      debugPrint("DEV: Local storage SUCCESSFUL");
     } catch (e) {
       debugPrint('DEV: Error loading from local storage: $e');
       // If loading from local storage fails, we'll rely on Supabase data
@@ -85,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _isLoading = false;
         });
       }
+      debugPrint('DEV: Supabase data fetch SUCCESSFUL');
     } catch (e) {
       debugPrint('DEV: Error fetching from Supabase: $e');
       setState(() {
@@ -161,18 +162,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Row(
                             children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.refresh,
-                                  color: Colors.grey[700],
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  await _fetchFromSupabase();
-                                },
-                              ),
                               IconButton(
                                 icon: Icon(
                                   Icons.more_vert,
