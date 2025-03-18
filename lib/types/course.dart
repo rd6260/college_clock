@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
 
+/// Course Class to store all course-related information
 class Course {
-  // Course Class to store all course-related information
-  final String courseID; // Unique identifier of a course
+  /// Unique identifier of a course
+  final String courseID; 
+  /// Full name of the course
   final String courseName;
+  /// Short alias for the course name, cause real name is very long sometimes
   final String
-  aliasName; // nickname sort of, cause real name is very long sometimes
+  aliasName;
+  /// Course code of the course
   final String? courseCode;
-  final String credits; // Format: L-T-P-S-C
+  /// Format: L-T-P-S-C, eg 3-2-4-5-3
+  final String credits;
+  /// Professors assigned to the course
   final List<String> professors;
+  /// Assistant Teachers, lab assistants
   final List<String>? assistantTeachers;
-  final bool segment; // true: "Full Semester"  false: "Half Semester"
+  // true: "Full Semester"  false: "Half Semester"
+  final bool segment;
   final List<CourseSession> lectureSessions;
   final List<CourseSession>? labSessions;
   final List<CourseSession>? tutorialSessions;
+  /// Hex color code for lectures (for using in ui)
   final String? lectureColor;
+  /// Hex color code for lab (for using in ui)
   final String? labColor;
+  /// Hex color code for tutorial classes (for using in ui)
   final String? tutorialColor;
+  /// is the class going on (yes => true) or is it finished or hasn't started yet (false)
   final bool relevant;
-  final int semester;
+  /// For what semesters the courses if for
+  final List<int> semesters;
 
   /// CSE, DSAI, ECE. If null it means it can be for any or all.
   final List<String>? departments;
@@ -39,7 +52,7 @@ class Course {
     this.labColor,
     this.tutorialColor,
     required this.relevant,
-    required this.semester,
+    required this.semesters,
     required this.departments,
   });
 
@@ -69,7 +82,7 @@ class Course {
       labColor: json['lab_color'],
       tutorialColor: json['tutorial_color'],
       relevant: json['relevant'],
-      semester: json['semester'],
+      semesters: json['semesters'],
       departments: json['departments'],
     );
   }
@@ -107,7 +120,7 @@ class Course {
       "lab_color": labColor,
       "tutorial_color": tutorialColor,
       "relevant": relevant,
-      "semester": semester,
+      "semesters": semesters,
       "departments": departments,
     };
   }
