@@ -151,7 +151,9 @@ class ClassesTodayCard extends StatelessWidget {
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WeeklyTimetableScreen(),
+                            builder:
+                                (context) =>
+                                    WeeklyTimetableScreen(courses: courses),
                           ),
                         ),
                     child: Text(

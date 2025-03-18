@@ -19,7 +19,8 @@ class Course {
   final Color? tutorialColor;
   final bool relevant;
   final int semester;
-  final String department;
+  /// CSE, DSAI, ECE. If null it means it can be for any or all. 
+  final List<String>? departments;
 
   Course({
     required this.courseID,
@@ -38,7 +39,7 @@ class Course {
     this.tutorialColor,
     required this.relevant,
     required this.semester,
-    required this.department,
+    required this.departments,
   });
 
   /// JSON Constructor
@@ -81,7 +82,7 @@ class Course {
       tutorialColor: parseColor(json['tutorial_color']),
       relevant: json['relevant'],
       semester: json['semester'],
-      department: json['department'],
+      departments: json['departments'],
     );
   }
 
@@ -121,7 +122,7 @@ class Course {
           tutorialColor == null ? null : colorToHex(tutorialColor!),
       "relevant": relevant,
       "semester": semester,
-      "department": department,
+      "departments": departments,
     };
   }
 

@@ -1,8 +1,10 @@
+import 'package:college_clock/types/course.dart';
 import 'package:college_clock/utils/classes_data.dart';
 import 'package:flutter/material.dart';
 
 class WeeklyTimetableScreen extends StatelessWidget {
-  const WeeklyTimetableScreen({super.key});
+  final List<Course> courses;
+  const WeeklyTimetableScreen({super.key, required this.courses});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +15,14 @@ class WeeklyTimetableScreen extends StatelessWidget {
         backgroundColor: Colors.white10,
         elevation: 0,
       ),
-      body: const TimetableView(),
+      body: TimetableView(courses: courses),
     );
   }
 }
 
 class TimetableView extends StatelessWidget {
-  const TimetableView({super.key});
+  final List<Course> courses;
+  const TimetableView({super.key, required this.courses});
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +129,7 @@ class TimetableView extends StatelessWidget {
                       Column(children: _buildGridLines()),
 
                       // Class cards
-                      ..._buildClassCards(context),
+                      ..._buildClassCards(context, courses),
                     ],
                   ),
                 ),
@@ -207,7 +210,7 @@ class TimetableView extends StatelessWidget {
     return lines;
   }
 
-  List<Widget> _buildClassCards(BuildContext context) {
+  List<Widget> _buildClassCards(BuildContext context, List<Course> courses) {
     List<Widget> cards = [];
     final double totalWidth =
         MediaQuery.of(context).size.width -
