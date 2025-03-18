@@ -297,7 +297,8 @@ class ClassesTodayCard extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      "Prof: ${course.professor.split(' ').last}",
+                      // "Prof: ${course.professor.split(' ').last}",
+                      course.professors.join("\n"),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.6,
