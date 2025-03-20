@@ -1,4 +1,3 @@
-// import 'package:college_clock/screens/full_table_screen.dart';
 import 'package:college_clock/screens/home_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -299,18 +298,18 @@ class OnBoardingModel {
 List<OnBoardingModel> onBoardinglist = [
   OnBoardingModel(
     title: 'Kya aap bhi college ke google sheet for timetable se pareshan hai?',
-    image: ImagesPath.kOnboarding1,
     description:
         'BC itna hard to look at hai sheet use krna for timetable. Kash kuch better looking mil jaata',
+    image: ImagesPath.kOnboarding1,
   ),
   OnBoardingModel(
     title: 'Idhar kuch dalna padega',
-    image: ImagesPath.kOnboarding2,
     description: "toh dalo na kuch madarchod!!!!",
+    image: ImagesPath.kOnboarding2,
   ),
   OnBoardingModel(
     title: "aab idhar kya lagu",
-    image: ImagesPath.kOnboarding3,
     description: "kuch bhi dalde bhai",
+    image: ImagesPath.kOnboarding3,
   ),
 ];
