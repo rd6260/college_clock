@@ -33,16 +33,23 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void onGetStarted() {
     if (_currentIndex == onBoardinglist.length - 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      onCompleteOnboarding(context);
     } else {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
       );
     }
+  }
+
+  void onCompleteOnboarding(BuildContext context) async {
+    if (!context.mounted) return;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false);
+    Navigator.of(
+      // ignore: use_build_context_synchronously
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
   }
 
   @override
@@ -216,7 +223,7 @@ class _PrimaryButtonState extends State<PrimaryButton>
 }
 
 class OnBoardingCard extends StatefulWidget {
-  final OnBoarding onBoardingModel;
+  final OnBoardingModel onBoardingModel;
   const OnBoardingCard({super.key, required this.onBoardingModel});
 
   @override
@@ -243,7 +250,7 @@ class _OnBoardingCardState extends State<OnBoardingCard> {
 }
 
 class OnboardingTextCard extends StatelessWidget {
-  final OnBoarding onBoardingModel;
+  final OnBoardingModel onBoardingModel;
   const OnboardingTextCard({required this.onBoardingModel, super.key});
 
   @override
@@ -277,35 +284,33 @@ class OnboardingTextCard extends StatelessWidget {
   }
 }
 
-class OnBoarding {
+class OnBoardingModel {
   String title;
   String description;
   String image;
 
-  OnBoarding({
+  OnBoardingModel({
     required this.title,
     required this.description,
     required this.image,
   });
 }
 
-List<OnBoarding> onBoardinglist = [
-  OnBoarding(
+List<OnBoardingModel> onBoardinglist = [
+  OnBoardingModel(
     title: 'Kya aap bhi college ke google sheet for timetable se pareshan hai?',
     image: ImagesPath.kOnboarding1,
     description:
         'BC itna hard to look at hai sheet use krna for timetable. Kash kuch better looking mil jaata',
   ),
-  OnBoarding(
-    title: '',
+  OnBoardingModel(
+    title: 'Idhar kuch dalna padega',
     image: ImagesPath.kOnboarding2,
-    description:
-        'Engaging features including test, story telling, and conversations that motivate and inspire language learners to unlock their full potential',
+    description: "toh dalo na kuch madarchod!!!!",
   ),
-  OnBoarding(
-    title: "Experience the Premium Features with Our App",
+  OnBoardingModel(
+    title: "aab idhar kya lagu",
     image: ImagesPath.kOnboarding3,
-    description:
-        'Updated TalkGpt with premium materials and a dedicated following, providing language learners with immersive content for effective learning',
+    description: "kuch bhi dalde bhai",
   ),
 ];

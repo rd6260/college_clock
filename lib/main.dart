@@ -1,4 +1,4 @@
-import 'package:college_clock/screens/home_screen.dart';
+import 'package:college_clock/screens/first_screen_gate.dart';
 import 'package:college_clock/utils/supabase_credentials.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: FirstScreenGate(),
     );
   }
 }
