@@ -1,4 +1,4 @@
-import 'package:college_clock/screens/home_screen.dart';
+import 'package:college_clock/screens/academic_details_setup_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,7 +48,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     Navigator.of(
       // ignore: use_build_context_synchronously
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+    ).pushReplacement(
+      MaterialPageRoute(builder: (_) => AcademicDetailsSetupScreen()),
+    );
   }
 
   @override
