@@ -1,3 +1,5 @@
+import 'package:college_clock/screens/all_set_screen.dart';
+import 'package:college_clock/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -25,37 +27,49 @@ class _AcademicDetailsSetupScreenState
   String? selectedSection;
 
   // Available options
-  late List<int> semesters; // from 1 to 8. not all semesters are running all the time
-  late List<String> departments; // CSE DSAI and ECE (fetching from db for future proof)
+  late List<int> semesters;
+  late List<String> departments;
   List<String> sections = ['A', 'B'];
+
+  // Page controller for smooth transitions
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
     super.initState();
     currentStateData = _fetchCurrentStateData();
-    _loadSavedData();
+    // _loadSavedData();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   // Load data from SharedPreferences
-  Future<void> _loadSavedData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      // selectedSemester = prefs.getInt('semester');
-      // selectedDepartment = prefs.getString('department');
-      // selectedSection = prefs.getString('section');
+  // Future<void> _loadSavedData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     selectedSemester = prefs.getInt('semester');
+  //     selectedDepartment = prefs.getString('department');
+  //     selectedSection = prefs.getString('section');
 
-      // Determine which step to start on based on saved data
-      if (selectedSemester != null) {
-        currentIndex = 1; // Move to department selection
-        if (selectedDepartment != null) {
-          currentIndex =
-              selectedDepartment == 'CSE'
-                  ? 2
-                  : 3; // Move to section or completion
-        }
-      }
-    });
-  }
+  //     if (selectedSemester != null) {
+  //       currentIndex = 1;
+  //       if (selectedDepartment != null) {
+  //         currentIndex = selectedDepartment == 'CSE' ? 2 : 3;
+  //       }
+  //     }
+
+  //     // Update page controller
+  //     WidgetsBinding.instance.addPostFrameCallback((_) {
+  //       if (_pageController.hasClients) {
+  //         _pageController.jumpToPage(currentIndex);
+  //       }
+  //     });
+  //   });
+  // }
 
   // Save data to SharedPreferences
   Future<void> _saveData() async {
@@ -84,6 +98,13 @@ class _AcademicDetailsSetupScreenState
       } else {
         currentIndex++;
       }
+
+      // Animate to the next page
+      _pageController.animateToPage(
+        currentIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
@@ -95,13 +116,26 @@ class _AcademicDetailsSetupScreenState
       } else {
         currentIndex--;
       }
+
+      // Animate to the previous page
+      _pageController.animateToPage(
+        currentIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     });
+  }
+
+  // Auto-proceed to the next step when an option is selected
+  void _handleOptionSelected() {
+    if (_canMoveNext()) {
+      _moveToNextStep();
+    }
   }
 
   Future<List<Map<String, dynamic>>> _fetchCurrentStateData() async {
     try {
       final response = await _supabase.from('current_state').select();
-
       debugPrint('DEV: Supabase `current_state` data fetch SUCCESSFUL');
       return response;
     } catch (e) {
@@ -117,15 +151,29 @@ class _AcademicDetailsSetupScreenState
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            body: const Center(child: Text("let's setup your academics!")),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Setting up your academics...",
+                    style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+                  ),
+                ],
+              ),
+            ),
           );
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          var data = snapshot.data.toString();
           return Scaffold(
             body: Center(
-              child: Row(children: [Text('No data found'), Text(data)]),
+              child: Text(
+                'No data found. Please try again.',
+                style: TextStyle(color: Colors.grey[700]),
+              ),
             ),
           );
         }
@@ -137,7 +185,6 @@ class _AcademicDetailsSetupScreenState
 
         semesters = result["running_sems"].cast<int>().toList();
         departments = result["departments"].cast<String>().toList();
-        // final List<String> sections = ['A', 'B'];
 
         return _buildScreen(context);
       },
@@ -146,104 +193,137 @@ class _AcademicDetailsSetupScreenState
 
   Widget _buildScreen(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Academic Details'),
-        centerTitle: true,
-        elevation: 0,
-        leading:
-            currentIndex > 0
-                ? IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: _moveToPreviousStep,
-                )
-                : null,
-      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LinearProgressIndicator(
-                value:
-                    (currentIndex + 1) / (selectedDepartment == 'CSE' ? 4 : 3),
-                backgroundColor: Colors.grey[200],
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(height: 24),
+        child: Stack(
+          children: [
+            // Content
+            PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildSemesterSelection(),
+                _buildDepartmentSelection(),
+                _buildSectionSelection(),
+                // _buildCompletionScreen(),
+              ],
+            ),
 
-              Expanded(
-                child: IndexedStack(
-                  index: currentIndex,
+            // Bottom Navigation Buttons
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 20,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Step 1: Semester Selection
-                    _buildSemesterSelection(),
+                    // Back Button
+                    AnimatedOpacity(
+                      opacity: currentIndex > 0 ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: IconButton(
+                        icon: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey[100],
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            size: 18,
+                          ),
+                        ),
+                        onPressed:
+                            currentIndex > 0 ? _moveToPreviousStep : null,
+                      ),
+                    ),
 
-                    // Step 2: Department Selection
-                    _buildDepartmentSelection(),
-
-                    // Step 3: Section Selection (only for CSE)
-                    _buildSectionSelection(),
-
-                    // Step 4: Complete/Summary
-                    _buildCompletionScreen(),
+                    // Complete Button or Next Button
+                    if (currentIndex == 2 ||
+                        currentIndex == 1 &&
+                            !["CSE", null].contains(selectedDepartment))
+                      ElevatedButton(
+                        onPressed: () {
+                          // Redirect to All Set Screen then to HomeScreen.
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => AllSetScreen(
+                                    onComplete: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HomeScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        child: const Text(
+                          'Get Started',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    else
+                      AnimatedOpacity(
+                        opacity: _canMoveNext() ? 1.0 : 0.7,
+                        duration: const Duration(milliseconds: 200),
+                        child: IconButton(
+                          icon: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).primaryColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(
+                                    context,
+                                  ).primaryColor.withValues(alpha: 0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: _canMoveNext() ? _moveToNextStep : null,
+                        ),
+                      ),
                   ],
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              // Navigation buttons
-              if (currentIndex < 3) ...[
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: _canMoveNext() ? _moveToNextStep : null,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(
-                      currentIndex == 2 ? 'Complete' : 'Continue',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ] else ...[
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigate to the main app screen
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainScreen()));
-                      print('Academic details saved successfully!');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: const Text(
-                      'Get Started',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -263,78 +343,85 @@ class _AcademicDetailsSetupScreenState
   }
 
   Widget _buildSemesterSelection() {
-    return SingleChildScrollView(
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 40),
           Text(
             'Select Your Semester',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[800],
+            ),
           ),
           const SizedBox(height: 12),
           Text(
             'Which semester are you currently in?',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
           ),
           const SizedBox(height: 40),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              childAspectRatio: 1,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemCount: semesters.length,
-            itemBuilder: (context, index) {
-              final semester = semesters[index];
-              final isSelected = selectedSemester == semester;
+          Expanded(
+            child: Center(
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: semesters.length,
+                itemBuilder: (context, index) {
+                  final semester = semesters[index];
+                  final isSelected = selectedSemester == semester;
 
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedSemester = semester;
-                  });
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  decoration: BoxDecoration(
-                    color:
-                        isSelected
-                            ? Theme.of(context).primaryColor
-                            : Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow:
-                        isSelected
-                            ? [
-                              BoxShadow(
-                                color: Theme.of(
-                                  context,
-                                ).primaryColor.withValues(alpha: 0.3),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ]
-                            : null,
-                  ),
-                  child: Center(
-                    child: Text(
-                      semester.toString(),
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: isSelected ? Colors.white : Colors.grey[700],
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedSemester = semester;
+                      });
+                      _handleOptionSelected();
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected
+                                ? Theme.of(context).primaryColor
+                                : Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                isSelected
+                                    ? Theme.of(
+                                      context,
+                                    ).primaryColor.withValues(alpha: 0.3)
+                                    : Colors.grey.withValues(alpha: 0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          semester.toString(),
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: isSelected ? Colors.white : Colors.grey[700],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -342,35 +429,39 @@ class _AcademicDetailsSetupScreenState
   }
 
   Widget _buildDepartmentSelection() {
-    return SingleChildScrollView(
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 40),
           Text(
             'Select Your Department',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[800],
+            ),
           ),
           const SizedBox(height: 12),
           Text(
             'Which department are you enrolled in?',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
           ),
           const SizedBox(height: 40),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.grey[100],
-            ),
-            child: Column(
-              children:
-                  departments.map((department) {
-                    final isSelected = selectedDepartment == department;
+          Expanded(
+            child: Center(
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: departments.length,
+                itemBuilder: (context, index) {
+                  final department = departments[index];
+                  final isSelected = selectedDepartment == department;
 
-                    return InkWell(
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: GestureDetector(
                       onTap: () {
                         setState(() {
                           selectedDepartment = department;
@@ -379,40 +470,61 @@ class _AcademicDetailsSetupScreenState
                             selectedSection = null;
                           }
                         });
+                        if (selectedDepartment == "CSE") {
+                          _handleOptionSelected();
+                        }
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 20,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color:
+                                isSelected
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.transparent,
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color:
+                                  isSelected
+                                      ? Theme.of(
+                                        context,
+                                      ).primaryColor.withValues(alpha: 0.2)
+                                      : Colors.grey.withValues(alpha: 0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Row(
                           children: [
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              width: 28,
-                              height: 28,
+                            Container(
+                              width: 50,
+                              height: 50,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color:
-                                      isSelected
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey,
-                                  width: 2,
-                                ),
                                 color:
                                     isSelected
                                         ? Theme.of(context).primaryColor
-                                        : Colors.transparent,
+                                        : Colors.grey[100],
+                                shape: BoxShape.circle,
                               ),
-                              child:
-                                  isSelected
-                                      ? const Icon(
-                                        Icons.check,
-                                        size: 18,
-                                        color: Colors.white,
-                                      )
-                                      : null,
+                              child: Center(
+                                child: Text(
+                                  department[0],
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        isSelected
+                                            ? Colors.white
+                                            : Colors.grey[700],
+                                  ),
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 16),
                             Expanded(
@@ -423,10 +535,8 @@ class _AcademicDetailsSetupScreenState
                                     department,
                                     style: TextStyle(
                                       fontSize: 18,
-                                      fontWeight:
-                                          isSelected
-                                              ? FontWeight.bold
-                                              : FontWeight.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[800],
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -440,11 +550,19 @@ class _AcademicDetailsSetupScreenState
                                 ],
                               ),
                             ),
+                            if (isSelected)
+                              Icon(
+                                Icons.check_circle_rounded,
+                                color: Theme.of(context).primaryColor,
+                                size: 28,
+                              ),
                           ],
                         ),
                       ),
-                    );
-                  }).toList(),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -466,137 +584,133 @@ class _AcademicDetailsSetupScreenState
   }
 
   Widget _buildSectionSelection() {
-    return SingleChildScrollView(
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 40),
           Text(
             'Select Your Section',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[800],
+            ),
           ),
           const SizedBox(height: 12),
           Text(
             'Which section are you assigned to?',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
           ),
           const SizedBox(height: 40),
-          Row(
-            children:
-                sections.map((section) {
-                  final isSelected = selectedSection == section;
+          Expanded(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:
+                    sections.map((section) {
+                      final isSelected = selectedSection == section;
 
-                  return Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedSection = section;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: section == 'A' ? 8 : 0),
-                        height: 160,
-                        decoration: BoxDecoration(
-                          color:
-                              isSelected
-                                  ? Theme.of(
-                                    context,
-                                  ).primaryColor.withValues(alpha: 0.1)
-                                  : Colors.grey[100],
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color:
-                                isSelected
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey[300]!,
-                            width: 2,
+                      return Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: section == 'A' ? 0 : 8,
+                            right: section == 'B' ? 0 : 8,
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedSection = section;
+                              });
+                              _handleOptionSelected();
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color:
-                                    isSelected
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey[300],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  section,
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color:
+                                      isSelected
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.transparent,
+                                  width: 2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
                                     color:
                                         isSelected
-                                            ? Colors.white
-                                            : Colors.grey[700],
+                                            ? Theme.of(context).primaryColor
+                                                .withValues(alpha: 0.2)
+                                            : Colors.grey.withValues(
+                                              alpha: 0.1,
+                                            ),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
                                   ),
-                                ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
+                                    width: 80,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color:
+                                          isSelected
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.grey[100],
+                                      boxShadow:
+                                          isSelected
+                                              ? [
+                                                BoxShadow(
+                                                  color: Theme.of(context)
+                                                      .primaryColor
+                                                      .withValues(alpha: 0.3),
+                                                  blurRadius: 12,
+                                                  offset: const Offset(0, 4),
+                                                ),
+                                              ]
+                                              : null,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        section,
+                                        style: TextStyle(
+                                          fontSize: 36,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              isSelected
+                                                  ? Colors.white
+                                                  : Colors.grey[700],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Section $section',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          isSelected
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'Section $section',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    isSelected
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey[700],
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCompletionScreen() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.check_circle, color: Colors.green, size: 80),
-          const SizedBox(height: 24),
-          Text(
-            'Academic Details Saved!',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(24),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              children: [
-                _buildInfoRow('Semester', 'Semester $selectedSemester'),
-                const SizedBox(height: 16),
-                _buildInfoRow('Department', selectedDepartment ?? ''),
-                if (selectedDepartment == 'CSE') ...[
-                  const SizedBox(height: 16),
-                  _buildInfoRow('Section', 'Section $selectedSection'),
-                ],
-              ],
+                      );
+                    }).toList(),
+              ),
             ),
           ),
         ],
@@ -604,16 +718,22 @@ class _AcademicDetailsSetupScreenState
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ],
-    );
-  }
+  // Widget _buildInfoRow(String label, String value) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Text(
+  //         label,
+  //         style: TextStyle(fontSize: 16, color: Colors.grey[600])
+  //       ),
+  //       Text(
+  //         value,
+  //         style: const TextStyle(
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.bold
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

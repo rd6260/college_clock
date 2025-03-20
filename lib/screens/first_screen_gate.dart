@@ -8,8 +8,9 @@ class FirstScreenGate extends StatelessWidget {
 
   Future<bool> checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-    bool isFirstTime = true;
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    // TODO: remove this when testing and development is done
+    isFirstTime = true;
     return isFirstTime;
   }
 

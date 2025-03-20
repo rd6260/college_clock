@@ -3,7 +3,6 @@ import 'package:college_clock/custom_widgets/classes_today_card.dart';
 import 'package:college_clock/types/course.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -119,13 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       debugPrint('Error writing to local storage: $e');
     }
-  }
-
-  void valueReset() async {
-    if (!context.mounted) return;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isFirstTime', true);
-    debugPrint("Reset done");
   }
 
   @override
@@ -267,14 +259,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ClassesTodayCard(
                         courses: courses,
                         weekDayNumber: _selectedDay + 1,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          valueReset();
-                        },
-                        child: Text("Reset"),
                       ),
                     ),
                   ],
